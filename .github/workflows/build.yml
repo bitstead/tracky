@@ -10,10 +10,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Debug - List files
+        run: ls -R
+
       - name: Build Unsigned App
         run: |
           xcodebuild clean build \
-            -project App/Tracky.xcodeproj \
+            -project Tracky/Tracky.xcodeproj \
             -scheme Tracky \
             -configuration Release \
             -sdk iphoneos \
@@ -26,7 +29,7 @@ jobs:
       - name: Package IPA
         run: |
           mkdir -p Payload
-          mv build/Build/Products/Release-iphoneos/Tracky.app Payload/
+          cp -r build/Build/Products/Release-iphoneos/Tracky.app Payload/
           zip -qr Tracky.ipa Payload
 
       - name: Upload IPA Artifact
